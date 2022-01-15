@@ -22,6 +22,10 @@ const (
 // WithTraceContext adds W3C Trace-Context headers from transaction in context.Context
 func WithTraceContext(ctx context.Context, e messenger.Envelope) messenger.Envelope {
 	tx := apm.TransactionFromContext(ctx)
+	if tx == nil {
+		return e
+	}
+
 	tc := tx.TraceContext()
 	traceparentValue := apmhttp.FormatTraceparentHeader(tc)
 	tracestateValue := tc.State.String()
