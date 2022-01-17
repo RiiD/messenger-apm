@@ -6,22 +6,22 @@ import (
 	"go.elastic.co/apm"
 )
 
-// Span wraps next middlewares in a span
-func Span(name, typ string) *span {
-	return &span{
+// WithSpan wraps context passed to the next middlewares in a span
+func WithSpan(name, typ string) *withSpan {
+	return &withSpan{
 		name: name,
 		typ:  typ,
 	}
 }
 
-type span struct {
+type withSpan struct {
 	name string
 	typ  string
 }
 
-func (w *span) Handle(ctx context.Context, _ messenger.Dispatcher, e messenger.Envelope, next messenger.NextFunc) {
-	span, spanCtx := apm.StartSpan(ctx, w.name, w.typ)
-	defer span.End()
+func (w *withSpan) Handle(ctx context.Context, _ messenger.Dispatcher, e messenger.Envelope, next messenger.NextFunc) {
+	s, ctx := apm.StartSpan(ctx, w.name, w.typ)
+	defer s.End()
 
-	next(spanCtx, e)
+	next(apm.ContextWithSpan(ctx, s), e)
 }

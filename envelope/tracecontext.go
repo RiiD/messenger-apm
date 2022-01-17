@@ -2,7 +2,6 @@ package envelope
 
 import (
 	"context"
-	"fmt"
 	"github.com/riid/messenger"
 	"github.com/riid/messenger/envelope"
 	"go.elastic.co/apm"
@@ -36,7 +35,7 @@ func WithTraceContext(ctx context.Context, e messenger.Envelope) messenger.Envel
 }
 
 // StartTransaction start transaction using W3C Trace-Context headers in the envelope
-func StartTransaction(tracer *apm.Tracer, e messenger.Envelope) *apm.Transaction {
+func StartTransaction(tracer *apm.Tracer, name string, typ string, e messenger.Envelope) *apm.Transaction {
 	messageType := envelope.MessageType(e)
 	if len(messageType) == 0 {
 		messageType = "unknown"
@@ -48,9 +47,7 @@ func StartTransaction(tracer *apm.Tracer, e messenger.Envelope) *apm.Transaction
 	tracestateValue, _ := e.LastHeader(TracestateHeader)
 	traceContext.State, _ = apmhttp.ParseTracestateHeader(tracestateValue)
 
-	name := fmt.Sprintf("%s message received", messageType)
-
-	tx := tracer.StartTransactionOptions(name, "message", apm.TransactionOptions{TraceContext: traceContext})
+	tx := tracer.StartTransactionOptions(name, typ, apm.TransactionOptions{TraceContext: traceContext})
 
 	return tx
 }
