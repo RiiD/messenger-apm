@@ -11,19 +11,22 @@ import (
 	"testing"
 )
 
-func TestWithTraceContext_given_context_with_transaction_it_should_add_trace_context_headers_with_its_value(t *testing.T) {
+func TestWithTraceContext_given_context_with_transaction_it_should_set_trace_context_headers_with_its_value(t *testing.T) {
 	tracer := apmtest.NewDiscardTracer()
-	tx := tracer.StartTransaction("Test", "test")
+	tx1 := tracer.StartTransaction("Test1", "test")
+	tx2 := tracer.StartTransaction("Test2", "test")
 
-	ctx := apm.ContextWithTransaction(context.Background(), tx)
+	ctx1 := apm.ContextWithTransaction(context.Background(), tx1)
+	ctx2 := apm.ContextWithTransaction(context.Background(), tx2)
 
-	e := WithTraceContext(ctx, envelope.FromMessage("test message"))
+	e := WithTraceContext(ctx1, envelope.FromMessage("test message"))
+	e = WithTraceContext(ctx2, e)
 
-	traceparent, _ := e.LastHeader(TraceparentHeader)
-	tracestate, _ := e.LastHeader(TracestateHeader)
+	traceparent := e.Header(TraceparentHeader)
+	tracestate := e.Header(TracestateHeader)
 
-	assert.Equal(t, traceparent, apmhttp.FormatTraceparentHeader(tx.TraceContext()))
-	assert.Equal(t, tracestate, tx.TraceContext().State.String())
+	assert.Equal(t, traceparent, []string{apmhttp.FormatTraceparentHeader(tx2.TraceContext())})
+	assert.Equal(t, tracestate, []string{tx2.TraceContext().State.String()})
 }
 
 func TestWithTraceContext_given_context_without_transaction_it_should_return_same_envelope_without_change(t *testing.T) {

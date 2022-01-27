@@ -25,9 +25,13 @@ func WithTraceContext(ctx context.Context, e messenger.Envelope) messenger.Envel
 		return e
 	}
 
+	e = envelope.WithoutHeader(e, TraceparentHeader)
+	e = envelope.WithoutHeader(e, TracestateHeader)
+
 	tc := tx.TraceContext()
 	traceparentValue := apmhttp.FormatTraceparentHeader(tc)
 	tracestateValue := tc.State.String()
+
 	e = envelope.WithHeader(e, TraceparentHeader, traceparentValue)
 	e = envelope.WithHeader(e, TracestateHeader, tracestateValue)
 
@@ -36,11 +40,6 @@ func WithTraceContext(ctx context.Context, e messenger.Envelope) messenger.Envel
 
 // StartTransaction start transaction using W3C Trace-Context headers in the envelope
 func StartTransaction(tracer *apm.Tracer, name string, typ string, e messenger.Envelope) *apm.Transaction {
-	messageType := envelope.MessageType(e)
-	if len(messageType) == 0 {
-		messageType = "unknown"
-	}
-
 	traceparentValue, _ := e.LastHeader(TraceparentHeader)
 	traceContext, _ := apmhttp.ParseTraceparentHeader(traceparentValue)
 

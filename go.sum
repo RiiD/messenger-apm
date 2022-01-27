@@ -29,8 +29,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/procfs v0.0.0-20190425082905-87a4384529e0 h1:c8R11WC8m7KNMkTv/0+Be8vvwo4I3/Ut9AC2FW8fX3U=
 github.com/prometheus/procfs v0.0.0-20190425082905-87a4384529e0/go.mod h1:TjEm7ze935MbeOT/UhFTIMYKhuLP4wbCsTZCD3I8kEA=
-github.com/riid/messenger v0.0.0-20220114175347-af9da6925871 h1:Zq8O/OA3qGtX5Bp7XAst6kQvWsi+dnX21QDJotrP//0=
-github.com/riid/messenger v0.0.0-20220114175347-af9da6925871/go.mod h1:jt0PPNl3y7L7JWfs1fk+jwHdPaB2C29XlfajdTLmU+0=
+github.com/riid/messenger v0.0.0-20220117162302-234459211f7b h1:vwQTLoTgcZlt3ttMk3skZ4Ect3UZd7jqErtKdRDzUgo=
+github.com/riid/messenger v0.0.0-20220117162302-234459211f7b/go.mod h1:jt0PPNl3y7L7JWfs1fk+jwHdPaB2C29XlfajdTLmU+0=
 github.com/santhosh-tekuri/jsonschema v1.2.4 h1:hNhW8e7t+H1vgY+1QeEQpveR6D4+OwKPXCfD2aieJis=
 github.com/santhosh-tekuri/jsonschema v1.2.4/go.mod h1:TEAUOeZSmIxTTuHatJzrvARHiuO9LYd+cIxzgEHCQI4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
